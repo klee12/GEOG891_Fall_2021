@@ -101,3 +101,49 @@ SortVec(b)
 tst = c("a","b","c")
 
 
+#4.1
+
+#d.stations %>% group_by(STATION_NA) %>% summarise(USGS_STATI = n())
+#d.stations %>% aggregate(d.stations$USGS_STATI, by = list(d.stations$STATION_NA),FUN = length)
+#d.stations %>% count(USGS_STATI)
+#d.stations %>% as_tibble() %>% dplyr::select(-geometry) %>% group_by(STATION_NA) %>% summarise(STATION_NA = n())
+#d.stations %>% as_tibble() %>% dplyr::select(-geometry) %>% dplyr::select(start)
+ 
+d.counties %>% sf::st_crs()
+d.stations %>% sf::st_crs()                                                             
+d.counties %>% sf::st_crs() == d.stations %>% sf::st_crs()
+
+del.counties_all <- d.counties 
+del.stations_all <- sf::st_intersection(del.counties_all,d.stations)
+
+del.counties51 <- d.counties %>% dplyr::filter(STATEFP10==51)
+del.stations51 <- sf::st_intersection(d.stations, del.counties51)
+
+
+del.counties42 <- d.counties %>% dplyr::filter(STATEFP10==42)
+del.stations42 <- sf::st_intersection(d.stations, del.counties42)
+
+del.counties24 <- d.counties %>% dplyr::filter(STATEFP10 == 24)
+del.stations24 <- sf::st_intersection(d.stations, del.counties24)
+
+
+del.counties36 <- d.counties %>% dplyr::filter(STATEFP10==36)
+del.stations36 <- sf::st_intersection(d.stations, del.counties36)
+del.stations36 %>% count(STATION_NA, sort = TRUE)
+
+del.counties54 <- d.counties %>% dplyr::filter(STATEFP10 == 54)
+del.stations54 <- sf::st_intersection(d.stations, del.counties54)
+del.stations10 %>% count(STATION_NA, sort = TRUE)
+
+del.counties10 <- d.counties %>% dplyr::filter(STATEFP10==10)
+del.stations10 <- sf::st_intersection(d.stations, del.counties10)
+del.stations10 %>% count(STATION_NA, sort = TRUE)
+
+del.counties11 <- d.counties %>% dplyr::filter(STATEFP10==11)
+del.stations11 <- sf::st_intersection(d.stations, del.counties11)
+del.stations11 %>% as_tibble() %>% dplyr::select(-geometry) %>% count(STATION_NA, sort = TRUE)
+
+#4.2
+
+NYCountyArea <- del.counties36  %>% st_area()
+mean(NYCountyArea)
