@@ -7,16 +7,21 @@ p.counties <- "../homework1/data/CBW/County_Boundaries.shp"
 p.stations <-"../homework1/data/CBW/Non-Tidal_Water_Quality_Monitoring_Stations_in_the_Chesapeake_Bay.shp"
 d.counties <- sf::read_sf(p.counties)
 d.stations <- sf::read_sf(p.stations)
-glimpse(d.counties)
-glimpse(d.stations)
 
-d.counties %>% dplyr::select(NAME10,ALAND10,AWATER10) %>% head()
+
 #1.1
-d.counties %>% select(NAME10,ALAND10,AWATER10) %>% mutate(landAreaPrec = ALAND10/(ALAND10+AWATER10))
+d.counties %>% select(NAME10,ALAND10,AWATER10) %>% mutate(landAreaPrec = ALAND10/sum(ALAND10+AWATER10)*100)
+  
+
+
+
+
 #1.2
 d.counties %>% as_tibble() %>% dplyr::select(-geometry) %>%
   group_by(STATEFP10) %>% select(NAME10,ALAND10,AWATER10) %>% 
-  mutate(LargPLandArea=max(AWATER10/(ALAND10+AWATER10)))
+  mutate(LargPLandArea=max(AWATER10/sum(ALAND10+AWATER10))) %>% 
+  slice(which.max(LargPLandArea))
+  
 
 #1.3
 d.counties %>% as_tibble() %>% dplyr::select(-geometry) %>%
@@ -26,11 +31,6 @@ d.counties %>% as_tibble() %>% dplyr::select(-geometry) %>% count(STATEFP10,sort
 
 #1.4
 d.stations %>% as_tibble() %>% dplyr::select(-geometry) %>% length(STATION_NA)
-#min(nchar(d.stations$STATION_NA))
-
-#min(d.stations$STATION_NA)
-#max(d.stations$STATION_NA)
-#sort(nchar(d.stations$STATION_NA))
 
 which(nchar(d.stations$STATION_NA)==min(nchar(d.stations$STATION_NA))) %>%d.stations[.,]%>% dplyr::select(STATION_NA)
 
@@ -113,8 +113,13 @@ d.counties %>% sf::st_crs()
 d.stations %>% sf::st_crs()                                                             
 d.counties %>% sf::st_crs() == d.stations %>% sf::st_crs()
 
-del.counties_all <- d.counties 
-del.stations_all <- sf::st_intersection(del.counties_all,d.stations)
+del.counties2 <- d.counties 
+del.stations2 <- d.stations 
+del.stations_all <- sf::st_intersection(d.stations,d.counties)
+
+
+
+
 
 del.counties51 <- d.counties %>% dplyr::filter(STATEFP10==51)
 del.stations51 <- sf::st_intersection(d.stations, del.counties51)
