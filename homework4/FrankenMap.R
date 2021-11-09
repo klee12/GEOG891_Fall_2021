@@ -1,0 +1,152 @@
+library(tidyverse)
+library(sf)
+library(raster)
+library(dplyr)
+library(spData)
+library(spDataLarge)
+
+
+library(tmap)    # for static and interactive maps
+library(leaflet) # for interactive maps
+library(ggplot2) # tidyverse data visualization package
+library(GISTools)
+
+
+# tmap uses a similar "grammar of graphics" as ggplot2
+
+#Group 1 ;---------------------------------------------------------------------
+
+countyboundries <- sf::read_sf("./data/County_Boundaries-_Census.shp")
+NE.counties <- read.csv(file = './data/ne_counties.csv')
+
+
+Populationdensity <-  NE.counties %>% mutate(Popden = Total/ALAND10)
+join_ne <- merge(countyboundries, Populationdensity, by.x= "NAME10", by.y = "NAME10" )
+
+Group1.map <- tm_shape(join_ne) + tm_fill(col = "Popden", alpha = 0.9, style="quantile") +
+  tm_borders(col = "brown", lwd = 1.5, lty = "solid")+ tm_scale_bar(breaks = c(0, 50,100), text.size = 0.5, position = c("right", "top"),bg.color = "grey" )
+
+
+
+#Group 2 :---------------------------------------------------------------------
+
+CountyData <- "./data/lancaster_county.shp"
+MuncData <- "./data/Municipal_Boundaries.shp"
+StatePLoc <-"./data/State_Park_Locations.shp"
+StreamData <-"./data/Streams_303_d_.shp"
+
+# Read Shapefile data
+RCountyData <- sf::read_sf(CountyData)
+RMuncData <- sf::read_sf(MuncData)%>% sf::st_make_valid()  
+RStatePLoc <- sf::read_sf(StatePLoc)
+RStreamData <- sf::read_sf(StreamData)
+
+#intersect the stream and countydata
+
+MunciLan <- st_intersection(RMuncData,RCountyData)
+Seg.RStreamData <- st_intersection(RStreamData,RCountyData)
+
+tm_shape(Seg.RStreamData)+tm_lines()
+
+Group2.map <- tm_shape(MunciLan)+
+  tm_fill("NAME",legend.show = FALSE, alpha = 0.7)+
+  tm_text("NAME")+ 
+  tm_shape(Seg.RStreamData)+
+  tm_lines("Impairment",legend.col.show=FALSE)+
+  tm_shape(RStatePLoc)+
+  tm_symbols(shape = 8,col = "black")+
+  tm_layout(legend.position =c("right","center"))
+
+
+#Group 3:----------------------------------------------------------------------
+
+
+tm_shape(nz) + tm_fill() + tm_borders() 
+qtm(nz)
+
+#or:
+map_nz = tm_shape(nz) + tm_polygons()
+map_nz1 = map_nz + tm_shape(nz_elev) + tm_raster(alpha=0.5)
+
+map_nz = tm_shape(nz) + tm_polygons()
+map_nz1 = map_nz + tm_shape(nz_elev) + tm_raster()
+
+# map <- base + layer_1 + layer_2 + aesthetic + function + layer_3
+# Sub.Lancaster <- ne.counties[!(ne.counties$NAMELSAD10 == "Lancaster County"),]
+
+
+ne.state <- read.csv("./data/ne_counties.csv")
+ne.counties <- sf::read_sf("./data/County_Boundaries-_Census.shp") %>%
+  sf::st_make_valid()
+tm_shape(ne.counties) + tm_fill() + tm_borders()
+
+Lancaster <- ne.counties[ne.counties$NAMELSAD10 == "Lancaster County",]
+
+streams <- sf::read_sf("./data/Streams_303_d_.shp") %>%
+  sf::st_make_valid()
+tm_shape(streams) + tm_lines()
+
+parks <- sf::read_sf("./data/State_Park_Locations.shp") %>%
+  sf::st_make_valid()
+tm_shape(parks) + tm_dots()
+
+municipal <- sf::read_sf("./data/Municipal_Boundaries.shp") %>%
+  sf::st_make_valid() 
+tm_shape(municipal) + tm_polygons()
+
+Dem <- raster("./data/e001.tif")  
+plot(Dem)
+
+tm_shape(Dem) + tm_raster(alpha=0.7)
+
+tm_shape(Dem) + tm_raster()
+
+
+#Group 1 (Expection)
+#Group1.map <- tm_shape(ne.counties) + tm_fill() + tm_borders()
+
+Lancaster.region = st_bbox(c(xmin = -96.91394, xmax = -96.46363,
+                             ymin = 40.52302, ymax = 41.04612),
+                           crs = st_crs(ne.counties)) %>% st_as_sfc()
+
+Inset.map <- tm_shape(Lancaster.region) + tm_borders(lwd = 5, col="red")
+
+# Confirm
+Group1.map + Inset.map 
+
+#Group 2 (Expection)
+# -Lancaster cOUNTY
+Lancaster.Mun <- sf::st_intersection(municipal, Lancaster)
+Lancaster.parks <- sf::st_intersection(parks, Lancaster)
+Lancaster.streams <- sf::st_intersection(streams, Lancaster)
+
+#Group2.map <- tm_shape(Lancaster.Mun) + tm_polygons("NAME", legend.show = F, alpha=0.7) +
+#tm_text("NAME", size = 0.8, fontface = "bold", xmod = 0.0, ymod = 0.7) +
+#tm_shape(Lancaster.parks) + tm_dots(size=0.5, col="darkgreen", alpha=0.7) +
+#tm_shape(Lancaster.streams) + tm_lines(lwd = 1.5, col="blue", alpha=0.7) 
+
+
+#Group 3 (Expection)
+
+Dem <- raster("./data/e001.tif")
+raster::crs(Dem) <- crs(Lancaster)  
+
+# plot(Dem)
+
+Group3.map <- tm_shape(Dem) + 
+  tm_raster(alpha = 0.7, palette = colorRampPalette(c("darkolivegreen4","yellow", "brown"))(12),
+            legend.show = F) + tm_compass(type = "8star", position = c("right", "top"), size = 2) +
+  tm_layout(main.title="  Map of Lancaster County", title.size = 1.1)
+
+Group3.map
+library(grid)
+Group3.map + Group2.map
+print(Group1.map + Inset.map, vp = viewport(0.85, 0.137, width = 0.3, height = 0.3))
+
+
+
+
+
+
+
+
