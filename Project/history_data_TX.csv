@@ -1,4 +1,4 @@
-Name,Date time,fips,Maximum Temperature,Minimum Temperature,Temperature,Wind Chill,Heat Index,Precipitation,Snow,Snow Depth,Wind Speed,Wind Direction,Wind Gust,Visibility,Cloud Cover,Relative Humidity,Conditions
+Name,datetime,fips,Maximum Temperature,Minimum Temperature,Temperature,Wind Chill,Heat Index,Precipitation,Snow,Snow Depth,Wind Speed,Wind Direction,Wind Gust,Visibility,Cloud Cover,Relative Humidity,Conditions
 "Corpus Christi, TX",05/01/2020,48355,85.3,60.6,73.5,,85.8,0,0,0,19.8,150.63,25.3,9.9,22.6,65.66,Clear
 "Corpus Christi, TX",05/02/2020,48355,87.2,71.7,78.7,,93.2,0,0,0,23.2,154.42,32,9.9,55.1,75.43,Partially cloudy
 "Corpus Christi, TX",05/03/2020,48355,87.3,72.2,79.3,,93.3,0,0,0,19.8,160.08,27.7,9.9,48.1,75.24,Partially cloudy
