@@ -1,6 +1,7 @@
 #Final Project 
 rm(list = ls())
 install.packages("ggridges")
+library(ggridges)
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
@@ -75,6 +76,7 @@ months <- c("October","September","August","July","June","May")
 
 Cass_ND$months <- as.Date(Cass_ND$datetime, "%m/%d/%Y") %>%
   months() %>%as.factor() %>% factor(., levels = months)
+
 mins <- min(Cass_ND$`Minimum Temperature`)
 maxs <- max(Cass_ND$`Maximum Temperature`)
 
@@ -178,12 +180,21 @@ pND<-ggplot(data = Lancaster_NE, mapping = aes(x = casecount, y = Temperature))+
 
 pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 
+
+ggscatter(Cass_ND, x = "casecount", y = "Temperature",
+          add = "reg.line",
+          conf.int = TRUE,
+          color = "months", palette = "jco", 
+          rug = TRUE                                
+)+  stat_cor(aes(color = months, label = ..r.label..), label.x.npc = "middle")           
+
 #==========================================
 
 #case count and windchill 
 plot1<-ggplot(data = Lancaster_NE, mapping = aes(x = casecount, y = `Wind Chill`))+
   geom_point()
 plot1+ stat_cor(method = "pearson", p.accuracy = 0.001)
+
 
 #===========================================================================================TX
 
@@ -199,7 +210,7 @@ ggplot(Nuece_TX,aes(x = Temperature,y=months,height=..density.., fill = ..x..))+
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
   labs(title = 'Temperatures in Nebraska (Lincoln)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -211,7 +222,7 @@ ggplot(Nuece_TX,aes(x = casecount,y=months,height=..density.., fill = ..x..))+
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
   labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -221,7 +232,7 @@ pND<-ggplot(data = Nuece_TX, mapping = aes(x = casecount, y = Temperature))+
   geom_point()+
   geom_smooth(method = 'lm')+
   labs(title = 'Degree Temperature VS COVID Case  in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
        x = "COVID Case # [Not cummlative ]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 #=================================================================================
@@ -231,10 +242,21 @@ pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 #==========================================
 
 #case count and windchill 
-plot1<-ggplot(data = Nuece_TX, mapping = aes(x = casecount, y = `Wind Chill`))+
+plot1<-ggplot(data = Nuece_TX, mapping = aes(x = casecount, y = `Heat Index`))+
   geom_point()
 plot1+ stat_cor(method = "pearson", p.accuracy = 0.001)
 
+
+pTX<-ggplot(data = Nuece_TX, mapping = aes(x = casecount, y = `Heat Index` ))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title = 'Heat Index VS COVID Case  in Texas  (Corpus Christi)',
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
+       y = "[oF]",x = "COVID Case # [Not cummlative ]")+
+  theme_ridges(font_size = 13, grid = TRUE) 
+
+
+pTX+stat_cor(method = "pearson", p.accuracy = 0.001)
 
 #=======================================================extra
 
