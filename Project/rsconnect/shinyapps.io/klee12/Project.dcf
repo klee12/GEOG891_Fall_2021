@@ -5,10 +5,10 @@ account: klee12
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5300702
-bundleId: 5351796
+bundleId: 5352229
 url: https://klee12.shinyapps.io/Project/
-when: 1639078520.89808
-lastSyncTime: 1639078520.89808
+when: 1639084260.08177
+lastSyncTime: 1639084260.08177
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: Cass_COVID.csv|Cass_COVID1.csv|Cass_COVID2.csv|Cass_COVID3.csv|FinalProject/app.R|FinalProject.R|history_data_ND.csv|history_data_ND1.csv|history_data_NE.csv|history_data_TX.csv|Lancaster_COVID.csv|Lancaster_COVID2.csv|mainTable.csv|NDdata.csv|NEdata.csv|Nuece_COVID.csv|Nuece_COVID2.csv|ProjectTestCase.R|RawFolder/Cass_COVID.csv|RawFolder/Nuece_COVID.csv|RawFolder/us-counties.csv|test111.csv|test112.csv|test113.csv|test114.csv|TXdata.csv|Update
+ignoredFiles: .RData|~$FinalPresentaton_Lee.pptx|Cass_COVID.csv|Cass_COVID1.csv|Cass_COVID2.csv|Cass_COVID3.csv|FinalPresentaton_Lee.pptx|FinalProject/app.R|FinalProject.R|history_data_ND.csv|history_data_ND1.csv|history_data_NE.csv|history_data_TX.csv|Lancaster_COVID.csv|Lancaster_COVID2.csv|mainTable.csv|NDdata.csv|NEdata.csv|Nuece_COVID.csv|Nuece_COVID2.csv|ProjectTestCase.R|RawFolder/Cass_COVID.csv|RawFolder/Nuece_COVID.csv|RawFolder/us-counties.csv|test111.csv|test112.csv|test113.csv|test114.csv|TXdata.csv|Update

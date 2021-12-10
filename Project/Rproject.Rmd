@@ -1,11 +1,21 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+---
+title: "FinalProject"
+author: "Kun-Yuan Lee"
+date: "2021/12/9"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Including Plots
+
+This plot created by Kun-Yuan Lee (Final Class Project)
+
+```{r Timeline, echo=FALSE}
 library(dplyr)
 library(tidyverse)
 library(shiny)
@@ -17,13 +27,11 @@ data <-read_csv("../Project/mainTable1.csv")
 data1 <-as.data.frame(data,stringsAsFactors = FALSE)
 reds <- colorNumeric("Reds", domain = NULL)
 blues <- colorNumeric("blue", domain = NULL)
-palc1 <-rev(brewer.pal(5, "RdYlBu"))
 palc <- colorNumeric(
-    palette = palc1,
+    palette = "RdYlBu",
     domain = data1$Temperature
 )
 
-            
 # specify shiny user interface and time slider
 ui2 <- bootstrapPage(tags$style(type = "text/css", "html, body, .leaflet {width:100%; height:100%}"),
                      leafletOutput("map", width = "100%", height = "100%"),
@@ -55,6 +63,7 @@ server5 <- function(input, output, session) {
                       opacity = 1,
                       bins = 5) %>%
             addLegend("bottomleft", pal = palc, values = ~Temperature,
+                      labFormat = labelFormat(transform = function(Temperature) sort(Temperature, decreasing = TRUE)),
                       title = "Mean Temperature [F] <br> (data: NWS/NOAA)",
                       opacity = 1,
                       bins = 5)
@@ -65,20 +74,20 @@ server5 <- function(input, output, session) {
             clearMarkers() %>%
             addCircleMarkers(lng = ~long,
                              lat = ~lat,
-                             radius = ~log(casecount) * 15,
+                             radius = ~log(casecount) * 10,
                              weight = 1,
                              opacity = 1,
                              color = ~ifelse(casecount > 0, reds(casecount), NA),
-                             popup = ~paste0("The ",county, " county has  ", casecount, " cases."))%>%
+                             popup = ~paste0("The ",county, "county has  ", casecount, " cases"))%>%
             
             addCircleMarkers(lng = ~long,
                              lat = ~lat,
-                             radius = ~log(Temperature) * 10,
+                             radius = ~log(Temperature) * 5,
                              weight = 1,
                              opacity = 1,
-                             fillOpacity = 0.5,
+                             fillOpacity = 1,
                              color = ~ifelse(Temperature > 0, palc(Temperature), NA),
-                             popup = ~paste0(Temperature, " degree F ."),
+                             popup = ~paste0(Temperature, " degree F "),
                              labelOptions =(noHide= TRUE))
     
         
@@ -90,3 +99,6 @@ server5 <- function(input, output, session) {
 
 
 shinyApp(ui2, server5,options = list(height = 550))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -1,4 +1,4 @@
-#Final Project 
+#Final Project  Kun-Yuan Lee Fall 2021 
 rm(list = ls())
 install.packages("ggridges")
 library(ggridges)
@@ -38,7 +38,7 @@ lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%",sep="") # ad % to labels
 
 pie3D(stat$case,labels=lbls,col=rainbow(length(lbls)),
-      main="Case number and Atomsspheric condition (ND) ")
+      main="Case number and Atomspheric condition Fargo, ND ")
 
 #==================================================================================
 #pie chart for Weather Condtions vs COVID-19 cases
@@ -52,7 +52,7 @@ lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%",sep="") # ad % to labels
 
 pie3D(stat$case,labels=lbls,col=rainbow(length(lbls)),
-      main="Case number and Atomsspheric condition (NE) ")
+      main="Case number and Atomspheric condition Lincoln, NE ")
 
 #==================================================================================
 #pie chart for Weather Condtions vs COVID-19 cases
@@ -66,7 +66,7 @@ lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%",sep="") # ad % to labels
 
 pie3D(stat$case,labels=lbls,col=rainbow(length(lbls)),
-      main="Case number and Atomsspheric condition (TX) ")
+      main="Case number and Atomspheric condition for Cropus Christi,TX ")
 
 
 #===============================================
@@ -87,7 +87,7 @@ ggplot(Cass_ND,aes(x = Temperature,y=months,height=..density.., fill = ..x..))+
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
   labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the NOAA/NWS', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -99,7 +99,7 @@ ggplot(Cass_ND,aes(x = casecount,y=months,height=..density.., fill = ..x..))+
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
   labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the NOAA/NWS', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -109,7 +109,7 @@ pND<-ggplot(data = Cass_ND, mapping = aes(x = casecount, y = Temperature))+
   geom_point()+
   geom_smooth(method = 'lm')+
   labs(title = 'Degree Temperature VS COVID Case  in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the NOAA/NWS', 
        x = "COVID Case # [Not cummlative ]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 #=================================================================================
@@ -117,14 +117,9 @@ pND<-ggplot(data = Cass_ND, mapping = aes(x = casecount, y = Temperature))+
 pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 
 #pND+ stat_cor(aes(color = months, label.x = '3'))
-
-
-
 #Test1 <- ggscatter(Cass_ND, x = "casecount", y = "Temperature",
  #           color = "months", palette = "jco",
 #        add = "reg.line", conf.int = TRUE)
-
-
 #Test1+stat_cor(aes(color = months),  p.accuracy = 0.0001,label.x.npc = "middle")
 #Test1
 #ND_data <- Cass_ND %>% as_tibble() %>%  mutate(months = as.Date(datetime,"%m/%d/%Y")) 
@@ -270,7 +265,8 @@ t1<-t%>% as_tibble() %>% mutate(week = cut.Date(t$Date, breaks = "1 week", label
 
 
 
-#================================================================================Timeline
+#================================================================================Timeline=======
+#Timeseris with leaflet interaction 
 library(tidyverse)
 library(shiny)
 library(leaflet)
