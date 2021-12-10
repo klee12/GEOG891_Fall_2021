@@ -38,7 +38,7 @@ lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%",sep="") # ad % to labels
 
 pie3D(stat$case,labels=lbls,col=rainbow(length(lbls)),
-      main="Case number and Atomspheric condition Fargo, ND ")
+      main="COVID-19 case number and weather condition in Fargo, ND ")
 
 #==================================================================================
 #pie chart for Weather Condtions vs COVID-19 cases
@@ -52,7 +52,7 @@ lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%",sep="") # ad % to labels
 
 pie3D(stat$case,labels=lbls,col=rainbow(length(lbls)),
-      main="Case number and Atomspheric condition Lincoln, NE ")
+      main="COVID-19 case number and weather condition in Lincoln, NE ")
 
 #==================================================================================
 #pie chart for Weather Condtions vs COVID-19 cases
@@ -66,7 +66,7 @@ lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%",sep="") # ad % to labels
 
 pie3D(stat$case,labels=lbls,col=rainbow(length(lbls)),
-      main="Case number and Atomspheric condition for Cropus Christi,TX ")
+      main="COVID-19 case number and weather condition in Cropus Christi,TX ")
 
 
 #===============================================
@@ -87,7 +87,7 @@ ggplot(Cass_ND,aes(x = Temperature,y=months,height=..density.., fill = ..x..))+
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
   labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the NOAA/NWS', 
+       subtitle = 'Mean temperatures (Fahrenheit) by month for 2020\nData: Original CSV from the NOAA/NWS.', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -97,10 +97,10 @@ ggplot(Cass_ND,aes(x = casecount,y=months,height=..density.., fill = ..x..))+
   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1.) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_discrete(expand = c(0.01, 0)) +
-  scale_fill_viridis(name = "Temp. [oF]", option = "C") +
-  labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the NOAA/NWS', 
-       x = "Mean Temperature [oF]") +
+  scale_fill_viridis(name = "Case #", option = "C") +
+  labs(title = 'COVID-19 Case count in North Dakota (Fargo)',
+       subtitle = 'COVID Casecount by month for 2020\nData: Original CSV from the NYTimes.', 
+       x = "COVID Case # [Not cummlative]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
 #Temperature vs. Daily COVID Rate
@@ -109,12 +109,13 @@ pND<-ggplot(data = Cass_ND, mapping = aes(x = casecount, y = Temperature))+
   geom_point()+
   geom_smooth(method = 'lm')+
   labs(title = 'Degree Temperature VS COVID Case  in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the NOAA/NWS', 
-       x = "COVID Case # [Not cummlative ]") +
-  theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2020  and October 31, 2020\nData: Original CSV from the NOAA/NWS. The COVID-19 data from the NYTimes', 
+       y = "[oF]", x = "COVID Case # [Not cummlative]") +
+  theme_ridges(font_size = 13, grid = TRUE) 
 #=================================================================================
 
 pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
+
 
 #pND+ stat_cor(aes(color = months, label.x = '3'))
 #Test1 <- ggscatter(Cass_ND, x = "casecount", y = "Temperature",
@@ -128,8 +129,15 @@ pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 
 #case count and windchill 
 plot1<-ggplot(data = Cass_ND, mapping = aes(x = casecount, y = `Wind Chill`))+
-  geom_point()
-plot1+ stat_cor(method = "pearson", p.accuracy = 0.001)
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title = 'Windchill Temperature VS COVID Case  in North Dakota (Fargo)',
+       subtitle = 'Windchill temperatures (Fahrenheit) Between May 1, 2020  and October 31, 2020\nData: Original CSV from the NOAA/NWS', 
+       y = "[oF]", x = "COVID Case # [Not cummlative ]") +
+  theme_ridges(font_size = 13, grid = TRUE) 
+
+
+plot1+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 
 
 #===============================================================================================NE
@@ -146,7 +154,7 @@ ggplot(Lancaster_NE,aes(x = Temperature,y=months,height=..density.., fill = ..x.
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
   labs(title = 'Temperatures in Nebraska (Lincoln)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
+       subtitle = 'Mean temperatures (Fahrenheit) by month for 2020\nData: Original CSV from the NOAA/NWS.', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -156,10 +164,10 @@ ggplot(Lancaster_NE,aes(x = casecount,y=months,height=..density.., fill = ..x..)
   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1.) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_discrete(expand = c(0.01, 0)) +
-  scale_fill_viridis(name = "Temp. [oF]", option = "C") +
-  labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
-       x = "Mean Temperature [oF]") +
+  scale_fill_viridis(name = "Case #", option = "C") +
+  labs(title = 'COVID-19 case count in Nebraska (Lincoln)',
+       subtitle = 'COVID Casecount by month for 2020\nData: Original CSV from the NYTimes.', 
+       x = "COVID Case # [Not cummlative]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
 #Temperature vs. Daily COVID Rate
@@ -167,16 +175,16 @@ ggplot(Lancaster_NE,aes(x = casecount,y=months,height=..density.., fill = ..x..)
 pND<-ggplot(data = Lancaster_NE, mapping = aes(x = casecount, y = Temperature))+
   geom_point()+
   geom_smooth(method = 'lm')+
-  labs(title = 'Degree Temperature VS COVID Case  in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) by month for 2016\nData: Original CSV from the Weather Underground', 
-       x = "COVID Case # [Not cummlative ]") +
-  theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
+  labs(title = 'Degree Temperature VS COVID case in Nebraska (Lincoln)',
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2020  and October 31, 2020\nData: Original CSV from the NOAA/NWS. The COVID-19 data from the NYTimes', 
+       y = "[oF]",x = "COVID Case # [Not cummlative]") +
+  theme_ridges(font_size = 13, grid = TRUE) 
 #=================================================================================
 
 pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 
 
-ggscatter(Cass_ND, x = "casecount", y = "Temperature",
+ggscatter(Nuece_TX, x = "casecount", y = "Temperature",
           add = "reg.line",
           conf.int = TRUE,
           color = "months", palette = "jco", 
@@ -187,8 +195,30 @@ ggscatter(Cass_ND, x = "casecount", y = "Temperature",
 
 #case count and windchill 
 plot1<-ggplot(data = Lancaster_NE, mapping = aes(x = casecount, y = `Wind Chill`))+
-  geom_point()
+  geom_point()+
+geom_smooth(method = 'lm')+
+  labs(title = 'Windchill Temperature VS COVID Case  in Nebraska (Lincoln)',
+       subtitle = 'Windchill temperatures (Fahrenheit) Between May 1, 2020  and October 31, 2020\nData: Original CSV from the NOAA/NWS', 
+       y = "[oF]", x = "COVID Case # [Not cummlative ]") +
+  theme_ridges(font_size = 13, grid = TRUE) 
+
+
+plot1+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 plot1+ stat_cor(method = "pearson", p.accuracy = 0.001)
+
+#another plot for heat Index (NE)
+plot1<-ggplot(data = Lancaster_NE, mapping = aes(x = casecount, y = `Heat Index`))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title = 'Heat Index VS COVID Case in Nebraska (Lincoln)',
+       subtitle = 'Heat Index (>=50F) (Fahrenheit) Between May 1, 2020  and October 31, 2020\nData: Original CSV from the NOAA/NWS', 
+       y = "[oF]", x = "COVID Case # [Not cummlative ]") +
+  theme_ridges(font_size = 13, grid = TRUE) 
+
+
+plot1+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
+plot1+ stat_cor(method = "pearson", p.accuracy = 0.001)
+
 
 
 #===========================================================================================TX
@@ -204,8 +234,8 @@ ggplot(Nuece_TX,aes(x = Temperature,y=months,height=..density.., fill = ..x..))+
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [oF]", option = "C") +
-  labs(title = 'Temperatures in Nebraska (Lincoln)',
-       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
+  labs(title = 'Temperatures in Texas (Corpus Christi)',
+       subtitle = 'Mean temperatures (Fahrenheit) by month for 2020\nData: Original CSV from the NOAA/NWS.', 
        x = "Mean Temperature [oF]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
@@ -215,10 +245,10 @@ ggplot(Nuece_TX,aes(x = casecount,y=months,height=..density.., fill = ..x..))+
   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1.) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_discrete(expand = c(0.01, 0)) +
-  scale_fill_viridis(name = "Temp. [oF]", option = "C") +
-  labs(title = 'Temperatures in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
-       x = "Mean Temperature [oF]") +
+  scale_fill_viridis(name = "Case #", option = "C") +
+  labs(title = 'COVID-19 case count in Texas (Corpus Christi)',
+       subtitle = 'COVID Casecount by month for 2020\nData: Original CSV from the NYTimes.', 
+       x = "COVID Case # [Not cummlative]") +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
 
 #Temperature vs. Daily COVID Rate
@@ -226,10 +256,10 @@ ggplot(Nuece_TX,aes(x = casecount,y=months,height=..density.., fill = ..x..))+
 pND<-ggplot(data = Nuece_TX, mapping = aes(x = casecount, y = Temperature))+
   geom_point()+
   geom_smooth(method = 'lm')+
-  labs(title = 'Degree Temperature VS COVID Case  in North Dakota (Fargo)',
-       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
-       x = "COVID Case # [Not cummlative ]") +
-  theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())
+  labs(title = 'Degree Temperature VS COVID Case in Texas (Corpus Christi)',
+       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2020 and October 31, 2020\nData: Original CSV from the NOAA/NWS. The COVID-19 data from the NYTimes', 
+       y = "[oF]",x = "COVID Case # [Not cummlative]") +
+  theme_ridges(font_size = 13, grid = TRUE) 
 #=================================================================================
 
 pND+ stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
@@ -246,12 +276,12 @@ pTX<-ggplot(data = Nuece_TX, mapping = aes(x = casecount, y = `Heat Index` ))+
   geom_point()+
   geom_smooth(method = 'lm')+
   labs(title = 'Heat Index VS COVID Case  in Texas  (Corpus Christi)',
-       subtitle = 'Mean temperatures (Fahrenheit) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NYT and NOAA', 
-       y = "[oF]",x = "COVID Case # [Not cummlative ]")+
+       subtitle = 'Heat Index (>=50F) Between May 1, 2021  and October 31, 2021\nData: Original CSV from the NOAA/NWS.', 
+       y = "[oF]",x = "COVID Case # [Not cummlative]")+
   theme_ridges(font_size = 13, grid = TRUE) 
 
 
-pTX+stat_cor(method = "pearson", p.accuracy = 0.001)
+pTX+stat_cor(method = "pearson", p.accuracy = 0.001,label.x.npc = "middle")
 
 #=======================================================extra
 
